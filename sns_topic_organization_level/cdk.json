@@ -1,0 +1,19 @@
+{
+  "app": "python3 app.py",
+  "context": {
+    "main_resources_name": "experiments-sns-central-topic",
+    "tags": {
+      "Owner": "Santiago Garcia Arango",
+      "Source": "https://github.com/san99tiago/aws-cdk-multiple-experiments",
+      "Usage": "Central organization level SNS topic for different experiments"
+    },
+    "app_config": {
+      "prod": {
+        "deployment_environment": "prod",
+        "log_level": "DEBUG",
+        "topic_name": "aws-experiments",
+        "topic_email": "san99tiagodevsecops+experiments@gmail.com"
+      }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "aws-cdk-multiple-experiments"
+version = "1.0.0"
+description = "Multiple AWS CDK experiments for fun PoCs and validations"
+authors = ["Santiago Garcia Arango <san99tiago@gmail.com>"]
+license = "Apache"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+aws-cdk-lib = "2.90.0"
+constructs = ">=10.0.0,<11.0.0"
+
+[tool.poetry.group.dev.dependencies]
+aws-lambda-powertools = {extras = ["all"], version = "^2.22.0"}
+poethepoet = "^0.20.0"
+pytest = "^7.3.2"
+pytest-mock = "^3.11.1"
+coverage = "^7.2.7"
+boto3 = "^1.28.22"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+pythonpath = [
+    "sns_topic_organization_level",
+]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.coverage.run]
+branch = true
+source = ["src", "cdk"]
+omit = [
+    "**/__init__.py"
+]
+
+[tool.coverage.report]
+show_missing = false

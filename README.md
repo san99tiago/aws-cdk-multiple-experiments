@@ -1,0 +1,7 @@
+# AWS-CDK-MULTIPLE-EXPERIMENTS
+
+## TODO: CREATE A DETAILED README FILE
+
+## License
+
+Copyright 2023 Santiago Garcia Arango.

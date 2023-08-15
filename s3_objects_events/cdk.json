@@ -1,0 +1,19 @@
+{
+  "app": "python3 app.py",
+  "context": {
+    "main_resources_name": "experiments-s3-events",
+    "tags": {
+      "Owner": "Santiago Garcia Arango",
+      "Source": "https://github.com/san99tiago/aws-cdk-multiple-experiments",
+      "Usage": "S3 Objects Events Triggers"
+    },
+    "app_config": {
+      "dev": {
+        "deployment_environment": "dev",
+        "log_level": "DEBUG",
+        "topic_name": "aws-experiments-s3-events",
+        "topic_email": "san99tiagodevsecops+s3events@gmail.com"
+      }
+    }
+  }
+}

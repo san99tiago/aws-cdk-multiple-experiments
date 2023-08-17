@@ -1,0 +1,19 @@
+{
+  "app": "python3 app.py",
+  "context": {
+    "main_resources_name": "backup-notifications",
+    "tags": {
+      "Owner": "Santiago Garcia Arango",
+      "Source": "https://github.com/san99tiago/aws-cdk-multiple-experiments",
+      "Usage": "Central account resources for AWS Backup notifications on failures"
+    },
+    "app_config": {
+      "prod": {
+        "deployment_environment": "prod",
+        "log_level": "DEBUG",
+        "bus_name": "backup-notifications",
+        "topic_email": "san99tiagodevsecops+backups@gmail.com"
+      }
+    }
+  }
+}

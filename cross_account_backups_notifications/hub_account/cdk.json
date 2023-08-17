@@ -5,7 +5,7 @@
     "tags": {
       "Owner": "Santiago Garcia Arango",
       "Source": "https://github.com/san99tiago/aws-cdk-multiple-experiments",
-      "Usage": "Central account resources for AWS Backup notifications on failures"
+      "Usage": "Hub account resources for AWS Backup failure notifications solution"
     },
     "app_config": {
       "prod": {

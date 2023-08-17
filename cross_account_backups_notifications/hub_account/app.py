@@ -6,7 +6,7 @@ import aws_cdk as cdk
 
 # Own imports
 import add_tags
-from stacks.backup_notifications_stack import BackupNotificationsStack
+from stacks.backup_notifications_hub_stack import BackupNotificationsHubStack
 
 
 print("--> Deployment AWS configuration (safety first):")
@@ -23,7 +23,7 @@ MAIN_RESOURCES_NAME = app.node.try_get_context("main_resources_name")
 APP_CONFIG = app.node.try_get_context("app_config")[DEPLOYMENT_ENVIRONMENT]
 
 
-stack: BackupNotificationsStack = BackupNotificationsStack(
+stack: BackupNotificationsHubStack = BackupNotificationsHubStack(
     app,
     f"{MAIN_RESOURCES_NAME}-{DEPLOYMENT_ENVIRONMENT}",
     MAIN_RESOURCES_NAME,

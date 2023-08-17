@@ -14,11 +14,11 @@ from .custom_constructs import (
 )
 
 
-class BackupNotificationsStack(Stack):
+class BackupNotificationsHubStack(Stack):
     """
     Class to create the infrastructure for a cross-account Hub EventBridge Bus
-    that has a rule that filter backup failure events and sends them to a
-    central SNS Topic.
+    that has a rule that filters backup failure events and sends them to a
+    central SNS Topic for admin notifications.
     """
 
     def __init__(

@@ -1,6 +1,3 @@
-# Built-in imports
-import builtins
-
 # External imports
 from aws_cdk import aws_events
 from constructs import Construct
@@ -8,13 +5,13 @@ from constructs import Construct
 
 class EventRuleConstruct(Construct):
     """
-    Construct to create an AWS EventBridge Rule with custom event pattern.
+    Construct to create an AWS EventBridge Rule with allow-all event pattern.
     """
 
     def __init__(
         self,
         scope: Construct,
-        id: builtins.str,
+        id: str,
         event_bus: aws_events.EventBus,
         rule_name: str,
     ) -> None:
@@ -31,9 +28,7 @@ class EventRuleConstruct(Construct):
             "EventBridge-Rule",
             rule_name=rule_name,
             event_pattern=aws_events.EventPattern(
-                source=["aws.backup"],
-                detail={"state": ["FAILED", "ABORTED", "EXPIRED"]},
-                detail_type=["Backup Job State Change"],
+                source=aws_events.Match.prefix(""),  # Do not filter anything
             ),
             event_bus=event_bus,
             enabled=True,

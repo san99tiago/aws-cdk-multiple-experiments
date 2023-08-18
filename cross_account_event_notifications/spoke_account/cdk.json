@@ -1,17 +1,17 @@
 {
   "app": "python3 app.py",
   "context": {
-    "main_resources_name": "backup-notifications",
+    "main_resources_name": "spoke-notifications",
     "tags": {
       "Owner": "Santiago Garcia Arango",
       "Source": "https://github.com/san99tiago/aws-cdk-multiple-experiments",
-      "Usage": "Spoke account resources for AWS Backup failure notifications solution"
+      "Usage": "Spoke account resources for the sources of the AWS notifications solution"
     },
     "app_config": {
       "dev": {
         "deployment_environment": "dev",
         "log_level": "DEBUG",
-        "hub_account_bus_arn": "arn:aws:events:us-east-1:825033963602:event-bus/backup-notifications"
+        "hub_account_bus_arn": "arn:aws:events:us-east-1:825033963602:event-bus/hub-central-notifications"
       }
     }
   }

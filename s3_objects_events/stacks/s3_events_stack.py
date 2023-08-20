@@ -83,7 +83,11 @@ class S3ObjectsEvents(Stack):
         """
 
         self.bucket.add_event_notification(
-            aws_s3.EventType.OBJECT_CREATED,
+            aws_s3.EventType.OBJECT_REMOVED,
+            aws_s3_notifications.SnsDestination(self.sns_topic),
+        )
+        self.bucket.add_event_notification(
+            aws_s3.EventType.OBJECT_REMOVED_DELETE,
             aws_s3_notifications.SnsDestination(self.sns_topic),
         )
 

@@ -1,0 +1,17 @@
+{
+  "app": "python3 app.py",
+  "context": {
+    "main_resources_name": "experiments-s3-objects-uploads",
+    "tags": {
+      "Owner": "Santiago Garcia Arango",
+      "Source": "https://github.com/san99tiago/aws-cdk-multiple-experiments",
+      "Usage": "S3 Objects Uploads from CDK"
+    },
+    "app_config": {
+      "dev": {
+        "deployment_environment": "dev",
+        "log_level": "DEBUG"
+      }
+    }
+  }
+}

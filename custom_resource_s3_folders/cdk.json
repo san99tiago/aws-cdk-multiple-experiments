@@ -1,0 +1,17 @@
+{
+  "app": "python3 app.py",
+  "context": {
+    "main_resources_name": "experiments-custom-resource-s3-folders",
+    "tags": {
+      "Owner": "Santiago Garcia Arango",
+      "Source": "https://github.com/san99tiago/aws-cdk-multiple-experiments",
+      "Usage": "Custom Resource example for uploading folders to S3 because it is not possible with CDK itself for now"
+    },
+    "app_config": {
+      "dev": {
+        "deployment_environment": "dev",
+        "log_level": "DEBUG"
+      }
+    }
+  }
+}

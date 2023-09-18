@@ -1,13 +1,20 @@
 {
-  "RequestType": "Create",
-  "RequestId": "9db53695-b0a0-47d6-908a-ea2d8a3ab5d7",
-  "ResponseURL": "https://...",
-  "ResourceType": "Custom::ExampleCustomResource",
-  "LogicalResourceId": "ExampleCustomResource",
-  "StackId": "arn:aws:cloudformation:us-east-1:955617200811:stack/github-webhook-test-3/1351a360-4fd0-11e9-b201-0a20b68b404c",
+  "RequestType": "Update",
+  "ServiceToken": "arn:aws:lambda:us-east-1:123456789012:function:experiments-custom-resour-ProviderCreateFoldersS3C-B2Q0ubea8a3Q",
+  "ResponseURL": "https://cloudformation-custom-resource-response-useast1.s3.amazonaws.com/arn%3Aaws%3Acloudformation%3Aus-east-1%3A123456789012%3Astack/experiments-custom-resource-s3-folders-dev/9f0800a0-538d-11ee-89c0-12361ace9c79%7CS3CreateFoldersCustomSimple%7C11679e23-449b-4d79-95c7-ebbb2b7b396a?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20230917T234140Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7200&X-Amz-Credential=AKIA6L7Q4OWT4KI6JZ7U%2F20230917%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=3b3af9baaa3b2284bed7ed474b436d21db2a7e2a65e57e778ffd97a2f7b9f230",
+  "StackId": "arn:aws:cloudformation:us-east-1:123456789012:stack/experiments-custom-resource-s3-folders-dev/9f0800a0-538d-11ee-89c0-12361ace9c79",
+  "RequestId": "11679e23-449b-4d79-95c7-ebbb2b7b396a",
+  "LogicalResourceId": "S3CreateFoldersCustomSimple",
+  "PhysicalResourceId": "49cb78b3-0cfa-46ed-bc43-1b1d9b34bb62",
+  "ResourceType": "Custom::S3CreateFoldersSimple",
   "ResourceProperties": {
-    "Repo": "alexdebrie/test-repo",
-    "Events": ["push", "pull_request"],
-    "Endpoint": "https://webhook.api.com"
+    "ServiceToken": "arn:aws:lambda:us-east-1:123456789012:function:experiments-custom-resour-ProviderCreateFoldersS3C-B2Q0ubea8a3Q",
+    "bucketName": "experiments-custom-resource-s3-fo-bucket12520700a-1a74xlophx0a8",
+    "folderName": "new-folder"
+  },
+  "OldResourceProperties": {
+    "ServiceToken": "arn:aws:lambda:us-east-1:123456789012:function:experiments-custom-resour-ProviderCreateFoldersS3C-B2Q0ubea8a3Q",
+    "bucketName": "experiments-custom-resource-s3-fo-bucket12520700a-1a74xlophx0a8",
+    "folderName": "ssh-inbound"
   }
 }

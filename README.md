@@ -8,7 +8,7 @@ This project covers multiple of my AWS Experiments in a simple fashion, so that 
 
 Decoupled Cross-Account EventBridge solution for notifying in a central AWS Account all "Backup Failures" from the "AWS Backup" service on any of the AWS Accounts of a given organization.
 
-<img src="./assets/aws-cdk-multiple-experiments-cross-account-events-backups.png" width=40%> <br>
+<img src="./assets/aws-cdk-multiple-experiments-cross-account-events-backups.png" width=60%> <br>
 
 More Details: [cross_account_event_notifications/README.md](./cross_account_event_notifications/README.md)
 
@@ -18,7 +18,7 @@ More Details: [cross_account_event_notifications/README.md](./cross_account_even
 
 AWS CloudFormation Custom-Resource built with AWS-CDK to upload "S3 Folders" at CDK deployment time.
 
-<img src="./assets/aws-cdk-multiple-experiments-custom-resource-s3-folders.png" width=40%> <br>
+<img src="./assets/aws-cdk-multiple-experiments-custom-resource-s3-folders.png" width=60%> <br>
 
 More Details: [custom_resource_s3_folders/README.md](./custom_resource_s3_folders/README.md)
 

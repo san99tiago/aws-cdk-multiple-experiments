@@ -19,7 +19,7 @@ from constructs import Construct
 class S3ExampleStack(Stack):
     """
     Class to create S3 buckets and automatically upload some sample "folders" to
-    S3 via a Custom Resource built.
+    S3 via a Custom Resource built in simple vs advanced versions.
     """
 
     def __init__(
@@ -45,7 +45,8 @@ class S3ExampleStack(Stack):
 
         # Main methods for the deployment
         self.create_s3_buckets()
-        self.create_custom_resource()
+        self.create_custom_resource_simple()  # Simple CustomResource
+        self.create_custom_resource_advanced()  # Advanced CustomResource
 
         # Create CloudFormation outputs
         self.generate_cloudformation_outputs()
@@ -54,58 +55,113 @@ class S3ExampleStack(Stack):
         """
         Method to create S3 buckets.
         """
-        self.bucket = aws_s3.Bucket(
+        self.bucket_1 = aws_s3.Bucket(
             self,
-            "Bucket",
+            "Bucket1",
             removal_policy=RemovalPolicy.DESTROY,
             auto_delete_objects=True,
             event_bridge_enabled=True,
         )
 
-    def create_custom_resource(self):
+        self.bucket_2 = aws_s3.Bucket(
+            self,
+            "Bucket2",
+            removal_policy=RemovalPolicy.DESTROY,
+            auto_delete_objects=True,
+            event_bridge_enabled=True,
+        )
+
+    def create_custom_resource_simple(self):
         """
         Method to create the CustomResource for uploading the S3 "folders".
         """
-        PATH_TO_CUSTOM_RESOURCE_LAMBDA = os.path.join(
+        PATH_CR_LAMBDA_SIMPLE = os.path.join(
             os.path.dirname(os.path.dirname(__file__)),
+            "simple_solution",
             "src",
         )
 
-        lambda_custom_resource: aws_lambda.Function = aws_lambda.Function(
+        lambda_custom_resource_1: aws_lambda.Function = aws_lambda.Function(
             self,
-            "Lambda-CreateFoldersS3CustomResource",
+            "Lambda-CreateFoldersS3CustomSimple",
             runtime=aws_lambda.Runtime.PYTHON_3_10,
             handler="create_folders_s3.handler",
-            code=aws_lambda.Code.from_asset(PATH_TO_CUSTOM_RESOURCE_LAMBDA),
+            code=aws_lambda.Code.from_asset(PATH_CR_LAMBDA_SIMPLE),
             timeout=Duration.seconds(15),
             memory_size=128,
             environment={
                 "LOG_LEVEL": "DEBUG",
             },
         )
-        lambda_custom_resource.role.add_managed_policy(
+        lambda_custom_resource_1.role.add_managed_policy(
             aws_iam.ManagedPolicy.from_aws_managed_policy_name("AmazonS3FullAccess")
         )
 
-        provider = Provider(
+        provider_1 = Provider(
             scope=self,
-            id="Provider-CreateFoldersS3CustomResource",
-            on_event_handler=lambda_custom_resource,
+            id="Provider-CreateFoldersS3CustomSimple",
+            on_event_handler=lambda_custom_resource_1,
         )
 
-        custom_resource = CustomResource(
+        custom_resource_1 = CustomResource(
             self,
-            "S3CreateFoldersCustomResource",
-            service_token=provider.service_token,
+            "CustomS3CreateFoldersSimple",
+            service_token=provider_1.service_token,
             removal_policy=RemovalPolicy.DESTROY,
-            resource_type="Custom::S3CreateFolders",
+            resource_type="Custom::S3CreateFoldersSimple",
             properties={
-                "folderName": "ssh-inbound",
-                "bucketName": self.bucket.bucket_name,
+                "folderName": "new-folder",
+                "bucketName": self.bucket_1.bucket_name,
             },
         )
 
-        custom_resource.node.add_dependency(self.bucket)
+        custom_resource_1.node.add_dependency(self.bucket_1)
+
+    def create_custom_resource_advanced(self):
+        """
+        Method to create the CustomResource for uploading the S3 "folders".
+        """
+        PATH_CR_LAMBDA_ADVANCED = os.path.join(
+            os.path.dirname(os.path.dirname(__file__)),
+            "advanced_solution",
+            "src",
+        )
+
+        lambda_custom_resource_2: aws_lambda.Function = aws_lambda.Function(
+            self,
+            "Lambda-CreateFoldersS3CustomAdvanced",
+            runtime=aws_lambda.Runtime.PYTHON_3_10,
+            handler="create_folders_s3.handler",
+            code=aws_lambda.Code.from_asset(PATH_CR_LAMBDA_ADVANCED),
+            timeout=Duration.seconds(15),
+            memory_size=128,
+            environment={
+                "LOG_LEVEL": "DEBUG",
+            },
+        )
+        lambda_custom_resource_2.role.add_managed_policy(
+            aws_iam.ManagedPolicy.from_aws_managed_policy_name("AmazonS3FullAccess")
+        )
+
+        provider_2 = Provider(
+            scope=self,
+            id="Provider-CreateFoldersS3CustomAdvanced",
+            on_event_handler=lambda_custom_resource_2,
+        )
+
+        custom_resource_2 = CustomResource(
+            self,
+            "CustomS3CreateFoldersAdvanced",
+            service_token=provider_2.service_token,
+            removal_policy=RemovalPolicy.DESTROY,
+            resource_type="Custom::S3CreateFoldersAdvanced",
+            properties={
+                "folderName": "ssh-inbound",
+                "bucketName": self.bucket_2.bucket_name,
+            },
+        )
+
+        custom_resource_2.node.add_dependency(self.bucket_2)
 
     def generate_cloudformation_outputs(self) -> None:
         """

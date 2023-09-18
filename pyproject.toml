@@ -10,6 +10,7 @@ readme = "README.md"
 python = "^3.9"
 aws-cdk-lib = "2.90.0"
 constructs = ">=10.0.0,<11.0.0"
+cfnresponse = "^1.1.2"
 
 [tool.poetry.group.dev.dependencies]
 aws-lambda-powertools = {extras = ["all"], version = "^2.22.0"}
@@ -18,6 +19,7 @@ pytest = "^7.3.2"
 pytest-mock = "^3.11.1"
 coverage = "^7.2.7"
 boto3 = "^1.28.22"
+
 
 [tool.pytest.ini_options]
 minversion = "6.0"

@@ -1,0 +1,12 @@
+{
+  "replicationRoleName": "s3-cross-account-replication-role",
+  "replicationRolePolicyName": "s3-cross-account-replication-role-policy",
+  "sourceAccountId": "146184342449",
+  "sourceRegion": "us-east-1",
+  "sourceBucketName": "multiple-experiments-146184342449-source",
+  "sourceKmsKeyAlias": "s3-cross-account-replication-source-key",
+  "destinationAccountId": "146184342449",
+  "destinationRegion": "us-east-2",
+  "destinationBucketName": "multiple-experiments-146184342449-destination",
+  "destinationKmsKeyAlias": "s3-cross-account-replication-destination-key"
+}

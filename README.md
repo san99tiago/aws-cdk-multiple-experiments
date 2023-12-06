@@ -22,6 +22,16 @@ AWS CloudFormation Custom-Resource built with AWS-CDK to upload "S3 Folders" at 
 
 More Details: [custom_resource_s3_folders/README.md](./custom_resource_s3_folders/README.md)
 
+### S3 Cross Region Replication with KMS setup
+
+Cross-Account and Cross-Region S3 buckets replication with custom managed KMS keys in place for an Active-Passive S3 bucket solution. Still requires multi-steps deployments, but is a good initial entrypoint.
+
+<img src="./assets/s3_cross_region_kms_1.png" width=60%> <br>
+
+Inspiration from: [aws-cdk-examples/tree/master/typescript/s3-kms-cross-account-replication](https://github.com/aws-samples/aws-cdk-examples/tree/master/typescript/s3-kms-cross-account-replication)
+
+---
+
 ### OTHERS
 
 TODO: Pending to add detailed README.md files and architectures.

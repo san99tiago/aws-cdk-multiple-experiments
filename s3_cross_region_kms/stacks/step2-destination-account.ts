@@ -25,13 +25,16 @@ import {
 export class Step2DestinationAccount extends Stack {
   public destinationS3Bucket: Bucket;
   public destinationKmsKey: Key;
-  constructor(scope: Construct, id: string, props?: StackProps) {
+  constructor(scope: Construct, id: string, replicationRoleArn: string, props?: StackProps) {
     super(scope, id, props);
 
-    const replicationRoleArn = new CfnParameter(this, "replicationRoleArn", {
-      type: "String",
-      description: "The ARN of the replication role in the source account",
-    });
+    // const replicationRoleArn = new CfnParameter(this, "replicationRoleArn", {
+    //   type: "String",
+    //   description: "The ARN of the replication role in the source account",
+    // });
+
+    // // CloudFormation imports from other stacks
+    // const replicationRoleArn = Fn.importValue("crossAccountReplicationRoleArn");
 
     const destinationKmsKey = new Key(
       this,
@@ -56,7 +59,7 @@ export class Step2DestinationAccount extends Stack {
             new PolicyStatement({
               sid: "Enable Replication Permissions",
               effect: Effect.ALLOW,
-              principals: [new ArnPrincipal(replicationRoleArn.valueAsString)],
+              principals: [new ArnPrincipal(replicationRoleArn)],
               actions: [
                 "kms:Encrypt",
                 "kms:Decrypt",
@@ -69,6 +72,7 @@ export class Step2DestinationAccount extends Stack {
           ],
         }),
         enableKeyRotation: true,
+        removalPolicy: RemovalPolicy.DESTROY,
       }
     );
 
@@ -112,7 +116,7 @@ export class Step2DestinationAccount extends Stack {
       new PolicyStatement({
         sid: "Set permissions for Objects",
         effect: Effect.ALLOW,
-        principals: [new ArnPrincipal(replicationRoleArn.valueAsString)],
+        principals: [new ArnPrincipal(replicationRoleArn)],
         actions: ["s3:ReplicateObject", "s3:ReplicateDelete"],
         resources: [`${destinationS3Bucket.bucketArn}/*`],
       })
@@ -123,7 +127,7 @@ export class Step2DestinationAccount extends Stack {
       new PolicyStatement({
         sid: "Set permissions on bucket",
         effect: Effect.ALLOW,
-        principals: [new ArnPrincipal(replicationRoleArn.valueAsString)],
+        principals: [new ArnPrincipal(replicationRoleArn)],
         actions: [
           "s3:List*",
           "s3:GetBucketVersioning",
@@ -138,7 +142,7 @@ export class Step2DestinationAccount extends Stack {
       new PolicyStatement({
         sid: "Allow ownership change",
         effect: Effect.ALLOW,
-        principals: [new ArnPrincipal(replicationRoleArn.valueAsString)],
+        principals: [new ArnPrincipal(replicationRoleArn)],
         actions: [
           "s3:ReplicateObject",
           "s3:ReplicateDelete",
@@ -154,9 +158,11 @@ export class Step2DestinationAccount extends Stack {
     this.destinationS3Bucket = destinationS3Bucket;
     new CfnOutput(this, "destinationKmsKeyArn", {
       value: destinationKmsKey.keyArn,
+      exportName: "destinationKmsKeyArn",
     });
     new CfnOutput(this, "destinationS3Bucket", {
       value: destinationS3Bucket.bucketArn,
+      exportName: "destinationS3Bucket",
     });
   }
 }

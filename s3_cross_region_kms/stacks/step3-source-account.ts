@@ -28,29 +28,34 @@ export class Step3SourceAccount extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    const replicationRoleArn = new CfnParameter(this, "replicationRoleArn", {
-      type: "String",
-      description: "The ARN of the replication role in the source account",
-    });
+    // const replicationRoleArn = new CfnParameter(this, "replicationRoleArn", {
+    //   type: "String",
+    //   description: "The ARN of the replication role in the source account",
+    // });
 
-    const destinationKmsKeyArn = new CfnParameter(
-      this,
-      "destinationKmsKeyArn",
-      {
-        type: "String",
-        description:
-          "The ARN of the destination KMS key in the destination account",
-      }
-    );
+    // const destinationKmsKeyArn = new CfnParameter(
+    //   this,
+    //   "destinationKmsKeyArn",
+    //   {
+    //     type: "String",
+    //     description:
+    //       "The ARN of the destination KMS key in the destination account",
+    //   }
+    // );
 
-    const destinationS3BucketArn = new CfnParameter(
-      this,
-      "destinationS3BucketArn",
-      {
-        type: "String",
-        description: "The ARN of the S3 bucket in the destination account",
-      }
-    );
+    // const destinationS3BucketArn = new CfnParameter(
+    //   this,
+    //   "destinationS3BucketArn",
+    //   {
+    //     type: "String",
+    //     description: "The ARN of the S3 bucket in the destination account",
+    //   }
+    // );
+
+    // CloudFormation imports from other stacks
+    const replicationRoleArn = Fn.importValue("crossAccountReplicationRoleArn")
+    const destinationKmsKeyArn = Fn.importValue("destinationKmsKeyArn")
+    const destinationS3BucketArn = Fn.importValue("destinationS3Bucket");
 
     const sourceKmsKey = new Key(
       this,
@@ -75,13 +80,14 @@ export class Step3SourceAccount extends Stack {
             new PolicyStatement({
               sid: "Enable Replication Permissions",
               effect: Effect.ALLOW,
-              principals: [new ArnPrincipal(replicationRoleArn.valueAsString)],
+              principals: [new ArnPrincipal(replicationRoleArn)],
               actions: ["kms:Decrypt", "kms:DescribeKey"],
               resources: ["*"],
             }),
           ],
         }),
         enableKeyRotation: true,
+        removalPolicy: RemovalPolicy.DESTROY,
       }
     );
 
@@ -120,7 +126,7 @@ export class Step3SourceAccount extends Stack {
       new PolicyStatement({
         sid: "Replication Permission",
         effect: Effect.ALLOW,
-        principals: [new ArnPrincipal(replicationRoleArn.valueAsString)],
+        principals: [new ArnPrincipal(replicationRoleArn)],
         actions: ["s3:GetReplicationConfiguration", "s3:ListBucket"],
         resources: [`${sourceS3Bucket.bucketArn}`],
       })
@@ -130,7 +136,7 @@ export class Step3SourceAccount extends Stack {
       new PolicyStatement({
         sid: "Get Object Versions",
         effect: Effect.ALLOW,
-        principals: [new ArnPrincipal(replicationRoleArn.valueAsString)],
+        principals: [new ArnPrincipal(replicationRoleArn)],
         actions: [
           "s3:GetObjectVersionForReplication",
           "s3:GetObjectVersionAcl",
@@ -148,19 +154,19 @@ export class Step3SourceAccount extends Stack {
     const lowLevelSourceS3Bucket = sourceS3Bucket.node
       .defaultChild as CfnBucket;
     lowLevelSourceS3Bucket.replicationConfiguration = {
-      role: replicationRoleArn.valueAsString,
+      role: replicationRoleArn,
       rules: [
         {
           id: "CrossAccountReplicationRule",
           status: "Enabled",
           destination: {
-            bucket: destinationS3BucketArn.valueAsString,
+            bucket: destinationS3BucketArn,
             accessControlTranslation: {
               owner: "Destination",
             },
             account: Config?.destinationAccountId,
             encryptionConfiguration: {
-              replicaKmsKeyId: destinationKmsKeyArn.valueAsString,
+              replicaKmsKeyId: destinationKmsKeyArn,
             },
           },
           priority: 1,

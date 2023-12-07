@@ -92,8 +92,9 @@ export class Step1SourceAccount extends Stack {
     );
 
     this.replicationRole = crossAccountReplicationRole;
-    new CfnOutput(this, "crossAccountReplicationRoleArn", {
-      value: crossAccountReplicationRole.roleArn,
-    });
+    // new CfnOutput(this, "crossAccountReplicationRoleArn", {
+    //   value: crossAccountReplicationRole.roleArn,
+    //   exportName: "crossAccountReplicationRoleArn",
+    // });
   }
 }

@@ -15,23 +15,33 @@ const step1 = new Step1SourceAccount(app, "Step1SourceAccount", {
     account: Config.sourceAccountId,
     region: Config.sourceRegion,
   },
+  crossRegionReferences: true,
 });
 
 // Step 2: Create destination KMS Key & S3 Bucket to replication to and allow the replication role in the source account to reach it.
-new Step2DestinationAccount(app, "Step2DestinationAccount", {
+const step2 = new Step2DestinationAccount(app, "Step2DestinationAccount", step1.replicationRole.roleArn, {
   env: {
     account: Config.destinationAccountId,
     region: Config.destinationRegion,
   },
+  crossRegionReferences: true,
 });
 
-// Step 3: Create source KMS Key & S3 Bucket to replicate from and allow the replication role to access it and replicate it.
-new Step3SourceAccount(app, "Step3SourceAccount", {
-  env: {
-    account: Config.sourceAccountId,
-    region: Config.sourceRegion,
-  },
-});
+// // Step 3: Create source KMS Key & S3 Bucket to replicate from and allow the replication role to access it and replicate it.
+// new Step3SourceAccount(app, "Step3SourceAccount", {
+//   env: {
+//     account: Config.sourceAccountId,
+//     region: Config.sourceRegion,
+//   },
+// });
+
+
+// Add tags from CDK context
+const appTags = cdk.Tags.of(app);
+const contextTags = app.node.tryGetContext("tags")
+for (const tag in contextTags) {
+  appTags.add(tag, contextTags[tag]);
+}
 
 cdk.Aspects.of(app).add(new AwsSolutionsChecks());
 

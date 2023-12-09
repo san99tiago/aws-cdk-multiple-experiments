@@ -30,6 +30,14 @@ Cross-Account and Cross-Region S3 buckets replication with custom managed KMS ke
 
 Inspiration from: [aws-cdk-examples/tree/master/typescript/s3-kms-cross-account-replication](https://github.com/aws-samples/aws-cdk-examples/tree/master/typescript/s3-kms-cross-account-replication)
 
+### Custom Emails with HTML and Attachments via Lambda and SES
+
+Example on how to develop a custom-built SES solution to send customized template emails from Lambda Functions and Simple Email Service. The solution includes S3 buckets to host the images inside the HTML.
+
+TODO: Add AWS architecture diagram.
+
+<!-- <img src="./assets/TODO_ADD_DIAGRAM" width=60%> <br> -->
+
 ---
 
 ### OTHERS

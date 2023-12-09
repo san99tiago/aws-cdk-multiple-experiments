@@ -1,0 +1,19 @@
+{
+  "app": "python3 app.py",
+  "context": {
+    "main_resources_name": "experiments-ses-emails",
+    "tags": {
+      "Owner": "Santiago Garcia Arango",
+      "Source": "https://github.com/san99tiago/aws-cdk-multiple-experiments",
+      "Usage": "SES experiments for sending custom emails"
+    },
+    "app_config": {
+      "dev": {
+        "deployment_environment": "dev",
+        "log_level": "DEBUG",
+        "ses_from_email": "san99tiagodevsecops+dev@gmail.com",
+        "ses_to_emails_list": "san99tiagodevsecops+dev@gmail.com"
+      }
+    }
+  }
+}

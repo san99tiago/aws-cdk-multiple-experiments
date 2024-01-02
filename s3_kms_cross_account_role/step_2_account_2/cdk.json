@@ -1,0 +1,20 @@
+{
+  "app": "python3 app.py",
+  "context": {
+    "main_resources_name": "step-2-s3-kms-cross-account",
+    "tags": {
+      "Owner": "Santiago Garcia Arango",
+      "Source": "https://github.com/san99tiago/aws-cdk-multiple-experiments",
+      "Usage": "Lambda for S3 bucket with KMS encryption for cross-account setup step 2"
+    },
+    "app_config": {
+      "dev": {
+        "deployment_environment": "dev",
+        "account_1_bucket_name": "s3-kms-cross-account-santi",
+        "account_1_kms_key_alias": "custom-key-santi",
+        "account_2_id": "825033963602",
+        "account_2_role_name": "s3-kms-cross-account-role-santi"
+      }
+    }
+  }
+}

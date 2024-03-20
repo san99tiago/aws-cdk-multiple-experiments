@@ -1,0 +1,53 @@
+{
+  "app": "python3 app.py",
+  "context": {
+    "main_resources_name": "cloud9-environments-cdk",
+    "tags": {
+      "Owner": "Santiago Garcia Arango",
+      "Source": "https://github.com/san99tiago/aws-cdk-multiple-experiments",
+      "Usage": "Cloud9 environments for demo that get created by CDK"
+    },
+    "app_config": {
+      "dev": {
+        "deployment_environment": "dev",
+        "instance_type": "t2.micro",
+        "automatic_stop_time_minutes": 30,
+        "image_id": "amazonlinux-2023-x86_64",
+        "aws_sso_federated_role": "AWSReservedSSO_DynamoLambdaCFLogsFull_6a79d6dfca02f1a9",
+        "cloud9_env_names": [
+          "san99tiago",
+          "valentina.agudelo@makaia.org",
+          "ana.acosta@betek.la",
+          "diego.rodriguez@makaia.org",
+          "ximenamartinezz97@gmail.com",
+          "jdgiar@gmail.com",
+          "zapatac2312@gmail.com",
+          "emquevedom@unal.edu.co",
+          "marianatama.9@gmail.com",
+          "jdanielcalle0@gmail.com",
+          "lcanasq@unal.edu.co",
+          "marianalujanalva@gmail.com",
+          "gabrielaaguiarmarquez@gmail.com",
+          "sarapatinorojas144@gmail.com",
+          "valenflorca@gmail.com",
+          "valentina.villa.perez.98@gmail.com",
+          "lauraariza1307@gmail.com",
+          "francydanielarojassalazar@gmail.com",
+          "suporteame4@gmail.com",
+          "valentina.cedano57@gmail.com",
+          "judith.mallama@udea.edu.co",
+          "criztianvelez@gmail.com",
+          "lulirios666@gmail.com",
+          "jefer9617@hotmail.com",
+          "kathe.meza.27@gmail.com",
+          "pajoy18@gmail.com",
+          "solyohanagiraldo@gmail.com",
+          "estefaniamartinezguzman1@gmail.com",
+          "mariany.lopez02@gmail.com",
+          "dilandahier@gmail.com",
+          "niavillan@gmail.com"
+        ]
+      }
+    }
+  }
+}

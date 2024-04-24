@@ -14,6 +14,18 @@ More Details: [cross_account_event_notifications/README.md](./cross_account_even
 
 ---
 
+### Event Driven Architecture Integration Tests
+
+Best practices for running integration tests on top of Event-Driven systems (in this case Serverless on top of Lambda and EventBridge)
+
+TBD: Add architecture image
+
+<!-- <img src="./assets/" width=60%> <br> -->
+
+More Details: [event_driven_architecture_tests/README.md](./event_driven_architecture_tests/README.md)
+
+---
+
 ### Custom Resource S3 Folders :open_file_folder:
 
 AWS CloudFormation Custom-Resource built with AWS-CDK to upload "S3 Folders" at CDK deployment time.

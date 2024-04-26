@@ -1,7 +1,7 @@
 {
   "app": "python3 app.py",
   "context": {
-    "main_resources_name": "publisher-system-eda",
+    "main_resources_name": "eda-sample-publisher",
     "tags": {
       "Owner": "Santiago Garcia Arango",
       "Source": "https://github.com/san99tiago/aws-cdk-multiple-experiments",

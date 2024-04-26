@@ -83,7 +83,7 @@ class PublisherSystemStack(Stack):
             "LambdaFunction-Publisher",
             runtime=aws_lambda.Runtime.PYTHON_3_12,
             handler="lambda_function.lambda_handler",
-            function_name=f"{self.main_resources_name}-publisher",
+            function_name=f"{self.main_resources_name}",
             code=aws_lambda.Code.from_asset(PATH_TO_PUBLISHER_LAMBDA_FUNCTION_FOLDER),
             timeout=Duration.seconds(30),
             memory_size=128,

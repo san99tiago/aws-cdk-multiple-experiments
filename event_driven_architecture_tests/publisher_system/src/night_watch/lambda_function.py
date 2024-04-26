@@ -16,12 +16,12 @@ BUS_NAME = os.environ["BUS_NAME"]
 client = boto3.client("events")
 
 
-@logger.inject_lambda_context(log_event=True)
 def lambda_handler(event: dict, context: LambdaContext):
     """
     Main lambda handler function.
     """
 
-    logger.info(f"Observed event: {event}")
+    logger.info("Observed event...")
+    logger.info(event)
 
     return {"statusCode": 200, "body": "success"}

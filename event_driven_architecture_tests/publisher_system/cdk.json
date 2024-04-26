@@ -11,7 +11,7 @@
       "dev": {
         "deployment_environment": "dev",
         "log_level": "DEBUG",
-        "bus_name": "event-driven-architecture-sample"
+        "bus_name": "santi-bus"
       }
     }
   }

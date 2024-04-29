@@ -4,10 +4,12 @@ import os
 # External imports
 from aws_cdk import (
     Stack,
-    aws_lambda,
+    aws_dynamodb,
     aws_events,
     aws_events_targets,
+    aws_lambda,
     Duration,
+    RemovalPolicy,
 )
 from constructs import Construct
 
@@ -39,9 +41,10 @@ class PublisherSystemStack(Stack):
 
         # Execute main methods for the stack
         self.create_event_bridge_bus()
+        self.create_dynamodb_table()
         self.create_lambda_layers()
         self.create_lambda_functions()
-        self.configure_lambda_to_eventbridge_permissions()
+        self.configure_lambda_permissions()
         self.configure_night_watch_lambda()
 
     def create_event_bridge_bus(self):
@@ -53,6 +56,24 @@ class PublisherSystemStack(Stack):
             self,
             "EventBridge-Bus",
             event_bus_name=self.app_config["bus_name"],
+        )
+
+    def create_dynamodb_table(self):
+        """
+        Create the DynamoDB Table used for adding some sample data-process to the publisher.
+        """
+        self.dynamodb_table = aws_dynamodb.Table(
+            self,
+            "DynamoDB-Table",
+            table_name=self.app_config["table_name"],
+            partition_key=aws_dynamodb.Attribute(
+                name="PK", type=aws_dynamodb.AttributeType.STRING
+            ),
+            sort_key=aws_dynamodb.Attribute(
+                name="SK", type=aws_dynamodb.AttributeType.STRING
+            ),
+            billing_mode=aws_dynamodb.BillingMode.PAY_PER_REQUEST,
+            removal_policy=RemovalPolicy.DESTROY,
         )
 
     def create_lambda_layers(self):
@@ -91,6 +112,7 @@ class PublisherSystemStack(Stack):
                 "ENV": self.app_config["deployment_environment"],
                 "LOG_LEVEL": "DEBUG",
                 "BUS_NAME": self.eventbus.event_bus_name,
+                "DYNAMODB_TABLE": self.dynamodb_table.table_name,
             },
             layers=[
                 self.lambda_layer_powertools,
@@ -121,12 +143,13 @@ class PublisherSystemStack(Stack):
             ],
         )
 
-    def configure_lambda_to_eventbridge_permissions(self):
+    def configure_lambda_permissions(self):
         """
         Method to configure the Lambda Function to have permissions to send events to
         the EventBridge Bus.
         """
         self.eventbus.grant_put_events_to(self.lambda_publisher)
+        self.dynamodb_table.grant_read_write_data(self.lambda_publisher)
 
     def configure_night_watch_lambda(self):
         """

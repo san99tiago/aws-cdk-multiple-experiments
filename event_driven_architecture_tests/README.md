@@ -2,9 +2,7 @@
 
 ## Architecture
 
-TBD
-
-<!-- <img src="../assets/" width=90%> <br> -->
+<img src="../assets/aws-event-driven-architectures-testing-strategies.png" width=90%> <br>
 
 ## Why this solution?
 

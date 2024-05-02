@@ -4,25 +4,23 @@ This project covers multiple of my AWS Experiments in a simple fashion, so that 
 
 ## Projects :fast_forward:
 
+### Event Driven Architecture Integration Tests
+
+Best practices for running integration tests on top of Event-Driven systems (in this case Serverless on top of Lambda and EventBridge with a complete pub/sub decoupled example)
+
+<img src="./assets/aws-event-driven-architectures-testing-strategies.png" width=80%> <br>
+
+More Details: [event_driven_architecture_tests/README.md](./event_driven_architecture_tests/README.md)
+
+---
+
 ### Cross Account Event Notifications
 
 Decoupled Cross-Account EventBridge solution for notifying in a central AWS Account all "Backup Failures" from the "AWS Backup" service on any of the AWS Accounts of a given organization.
 
-<img src="./assets/aws-cdk-multiple-experiments-cross-account-events-backups.png" width=60%> <br>
+<img src="./assets/aws-cdk-multiple-experiments-cross-account-events-backups.png" width=80%> <br>
 
 More Details: [cross_account_event_notifications/README.md](./cross_account_event_notifications/README.md)
-
----
-
-### Event Driven Architecture Integration Tests
-
-Best practices for running integration tests on top of Event-Driven systems (in this case Serverless on top of Lambda and EventBridge)
-
-TBD: Add architecture image
-
-<!-- <img src="./assets/" width=60%> <br> -->
-
-More Details: [event_driven_architecture_tests/README.md](./event_driven_architecture_tests/README.md)
 
 ---
 

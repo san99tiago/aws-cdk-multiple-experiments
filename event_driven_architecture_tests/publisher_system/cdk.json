@@ -12,7 +12,7 @@
         "deployment_environment": "dev",
         "log_level": "DEBUG",
         "bus_name": "santi-bus",
-        "table_name": "eda-publisher-events"
+        "table_name": "eda-publisher-events-dev"
       }
     }
   }

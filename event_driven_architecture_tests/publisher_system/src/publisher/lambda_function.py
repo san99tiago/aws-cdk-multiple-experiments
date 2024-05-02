@@ -14,7 +14,7 @@ from helpers.dynamodb_helper import DynamoDBHelper
 
 
 logger = Logger(
-    service="publisher-system",
+    service="eda-system",
     log_uncaught_exceptions=True,
     owner="santi-tests",
 )
@@ -23,7 +23,7 @@ logger = Logger(
 BUS_NAME = os.environ["BUS_NAME"]
 DYNAMODB_TABLE = os.environ["DYNAMODB_TABLE"]
 ENDPOINT_URL = os.environ.get("ENDPOINT_URL")
-SOURCE = "publisher-system"
+SOURCE = "eda-system.publisher"
 DETAIL_TYPE = "eda-action"
 
 client = boto3.client("events")

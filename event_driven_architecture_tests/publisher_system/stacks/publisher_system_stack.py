@@ -104,7 +104,7 @@ class PublisherSystemStack(Stack):
             "LambdaFunction-Publisher",
             runtime=aws_lambda.Runtime.PYTHON_3_12,
             handler="lambda_function.lambda_handler",
-            function_name=f"{self.main_resources_name}",
+            function_name=f"{self.main_resources_name}-{self.deployment_environment}",
             code=aws_lambda.Code.from_asset(PATH_TO_PUBLISHER_LAMBDA_FUNCTION_FOLDER),
             timeout=Duration.seconds(30),
             memory_size=128,
@@ -128,7 +128,7 @@ class PublisherSystemStack(Stack):
             self,
             "LambdaFunction-NightWatch",
             runtime=aws_lambda.Runtime.PYTHON_3_12,
-            function_name=f"{self.main_resources_name}-night-watch",
+            function_name=f"{self.main_resources_name}-night-watch-{self.deployment_environment}",
             handler="lambda_function.lambda_handler",
             code=aws_lambda.Code.from_asset(PATH_TO_NIGHT_WATCH_LAMBDA_FUNCTION_FOLDER),
             timeout=Duration.seconds(30),
@@ -164,7 +164,7 @@ class PublisherSystemStack(Stack):
         aws_events.Rule(
             self,
             "EventBridge-Rule-NightWatch",
-            rule_name=f"{self.main_resources_name}-night-watch-rule",
+            rule_name=f"{self.main_resources_name}-night-watch-rule-{self.deployment_environment}",
             event_pattern=all_events_pattern,
             event_bus=self.eventbus,
             targets=[

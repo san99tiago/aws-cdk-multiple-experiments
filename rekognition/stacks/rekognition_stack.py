@@ -5,6 +5,8 @@ import os
 from aws_cdk import (
     Stack,
     CfnOutput,
+    aws_iam,
+    aws_lambda,
     aws_s3,
     aws_s3_deployment,
     RemovalPolicy,
@@ -39,12 +41,14 @@ class RekognitionStack(Stack):
         self.construct_id = construct_id
         self.main_resources_name = main_resources_name
         self.app_config = app_config
+        self.deployment_environment = self.app_config["deployment_environment"]
 
         # Main methods for the deployment
         self.create_s3_buckets()
         self.upload_objects_to_s3()
 
-        # TODO: PENDING TO ADD REKOGNITION RESOURCES
+        self.create_lambda_layers()
+        self.create_lambda_functions()
 
         # Create CloudFormation outputs
         self.generate_cloudformation_outputs()
@@ -56,6 +60,7 @@ class RekognitionStack(Stack):
         self.bucket = aws_s3.Bucket(
             self,
             "Bucket",
+            bucket_name=f"{self.main_resources_name}-{self.account}-{self.deployment_environment}",
             removal_policy=RemovalPolicy.DESTROY,
             auto_delete_objects=True,
             event_bridge_enabled=True,
@@ -78,6 +83,56 @@ class RekognitionStack(Stack):
             destination_key_prefix="test-images",
         )
 
+    def create_lambda_layers(self):
+        """
+        Create the Lambda layers that are necessary for the additional runtime
+        dependencies of the Lambda Functions.
+        """
+
+        # Layer for "LambdaPowerTools" (for logging, traces, observability, etc)
+        self.lambda_layer_powertools = aws_lambda.LayerVersion.from_layer_version_arn(
+            self,
+            id="LambdaLayer-Powertools",
+            layer_version_arn=f"arn:aws:lambda:{self.region}:017000801446:layer:AWSLambdaPowertoolsPythonV2:52",
+        )
+
+    def create_lambda_functions(self):
+        """
+        Create the Lambda Functions for the rekognition system.
+        """
+        # Get relative path for folder that contains Lambda function source
+        # ! Note--> we must obtain parent dirs to create path (that"s why there is "os.path.dirname()")
+        PATH_TO_LAMBDA_FUNCTION_FOLDER = os.path.join(
+            os.path.dirname(os.path.dirname(__file__)),
+            "src",
+        )
+        self.lambda_function: aws_lambda.Function = aws_lambda.Function(
+            self,
+            "LambdaFunction",
+            runtime=aws_lambda.Runtime.PYTHON_3_12,
+            function_name=f"{self.main_resources_name}-{self.deployment_environment}",
+            handler="lambda_function.lambda_handler",
+            code=aws_lambda.Code.from_asset(PATH_TO_LAMBDA_FUNCTION_FOLDER),
+            timeout=Duration.seconds(30),
+            memory_size=128,
+            environment={
+                "ENV": self.deployment_environment,
+                "LOG_LEVEL": "DEBUG",
+                "S3_BUCKET": self.bucket.bucket_name,
+            },
+            layers=[
+                self.lambda_layer_powertools,
+            ],
+        )
+
+        # Add permissions to the Lambda Function for S3 and Rekognition
+        self.bucket.grant_read_write(self.lambda_function)
+        self.lambda_function.role.add_managed_policy(
+            aws_iam.ManagedPolicy.from_aws_managed_policy_name(
+                "AmazonRekognitionFullAccess"
+            )
+        )
+
     def generate_cloudformation_outputs(self) -> None:
         """
         Method to add the relevant CloudFormation outputs.
@@ -86,6 +141,6 @@ class RekognitionStack(Stack):
         CfnOutput(
             self,
             "DeploymentEnvironment",
-            value=self.app_config["deployment_environment"],
+            value=self.deployment_environment,
             description="Deployment environment",
         )

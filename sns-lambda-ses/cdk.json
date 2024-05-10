@@ -1,0 +1,13 @@
+{
+  "app": "npx ts-node --prefer-ts-exts bin/cdk.ts",
+  "context": {
+    "app_config": {
+      "dev": {
+        "deployment_environment": "dev",
+        "log_level": "DEBUG",
+        "ses_from_email": "san99tiagodevsecops+dev@gmail.com",
+        "ses_to_emails_list": "san99tiagodevsecops+dev@gmail.com"
+      }
+    }
+  }
+}

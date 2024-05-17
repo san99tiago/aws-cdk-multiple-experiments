@@ -8,9 +8,6 @@ import random
 # External imports
 from aws_lambda_powertools import Logger
 from aws_lambda_powertools.utilities.typing import LambdaContext
-from aws_lambda_powertools.utilities.data_classes.event_bridge_event import (
-    EventBridgeEvent,
-)
 
 
 logger = Logger(
@@ -25,6 +22,36 @@ S3_BUCKET = os.environ["S3_BUCKET"]
 rekognition_client = boto3.client("rekognition")
 
 
+def detect_faces(image_key: str):
+    """
+    Detect faces in an image.
+    """
+    result = rekognition_client.detect_faces(
+        Image={
+            "S3Object": {
+                "Bucket": S3_BUCKET,
+                "Name": image_key,
+            },
+        },
+    )
+    return result
+
+
+def recognize_celebrities(image_key: str):
+    """
+    Recognize celebrities in an image.
+    """
+    result = rekognition_client.recognize_celebrities(
+        Image={
+            "S3Object": {
+                "Bucket": S3_BUCKET,
+                "Name": image_key,
+            },
+        },
+    )
+    return result
+
+
 @logger.inject_lambda_context(log_event=True)
 def lambda_handler(event: dict, context: LambdaContext):
     """
@@ -35,35 +62,12 @@ def lambda_handler(event: dict, context: LambdaContext):
     logger.info("Starting processing of the rekognition example...")
     image_key = event.get("S3_KEY_IMAGE", "test-images/santi/reference.png")
 
-    result = rekognition_client.detect_faces(
-        Image={
-            "S3Object": {
-                "Bucket": S3_BUCKET,
-                "Name": image_key,
-            },
-        },
-    )
+    # # Option 1: detect faces in a given image
+    # result = detect_faces(image_key)
+
+    # Option 2: detect celebrities in a given image
+    result = recognize_celebrities(image_key)
+
     logger.info(result, extra={"image_key": image_key})
-
-    # target_image = event.get("S3_KEY_TARGET_IMAGE", "images/santi/reference.png")
-    # source_image = event.get("S3_KEY_SOURCE_IMAGE", "images/santi/reference.png")
-
-    # rekognition_client.compare_faces(
-    #     SimilarityThreshold=95,
-    #     TargetImage={
-    #         "S3Object": {
-    #             "Bucket": S3_BUCKET,
-    #             "Name": target_image,
-    #         },
-    #     },
-    #     SourceImage={
-    #         "S3Object": {
-    #             "Bucket": S3_BUCKET,
-    #             "Name": source_image,
-    #         },
-    #     },
-    # )
-
-    logger.info("Starting the write to s3 process for the input event")
 
     return {"statusCode": 200, "message": result}

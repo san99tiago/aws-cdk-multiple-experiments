@@ -14,6 +14,16 @@ More Details: [event_driven_architecture_tests/README.md](./event_driven_archite
 
 ---
 
+### CodePipeline 2 Sources
+
+Example on how to create a CI/CD pipeline on AWS with CodeBuild and CodePipeline, that fetches 2 different GitHub Repositories, and somehow "integrates" them.
+
+<img src="./assets/aws-codepipeline-multiple-sources.png" width=80%> <br>
+
+More Details: [codepipeline_2_sources/README.md](./codepipeline_2_sources/README.md)
+
+---
+
 ### Cross Account Event Notifications
 
 Decoupled Cross-Account EventBridge solution for notifying in a central AWS Account all "Backup Failures" from the "AWS Backup" service on any of the AWS Accounts of a given organization.

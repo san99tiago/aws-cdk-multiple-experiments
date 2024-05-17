@@ -1,0 +1,17 @@
+{
+  "app": "npx ts-node --prefer-ts-exts bin/cdk.ts",
+  "context": {
+    "app_config": {
+      "dev": {
+        "deployment_environment": "dev",
+        "log_level": "DEBUG",
+        "code_pipeline_connector_arn": "arn:aws:codestar-connections:us-east-1:146184342449:connection/58583c49-c5cc-47c8-ac0b-356c9a5c65e7",
+        "sourceRepoOrg": "san99tiago",
+        "sourceRepo": "aws-cdk-multiple-experiments",
+        "sourceBranch": "main",
+        "source2Repo": "aws-iac-stocks-demo",
+        "source2Branch": "main"
+      }
+    }
+  }
+}

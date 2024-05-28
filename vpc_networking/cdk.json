@@ -1,0 +1,19 @@
+{
+  "app": "python3 app.py",
+  "context": {
+    "main_resources_name": "experiments-s3-vpc-networking",
+    "tags": {
+      "Owner": "Santiago Garcia Arango",
+      "Source": "https://github.com/san99tiago/aws-cdk-multiple-experiments",
+      "Usage": "Explore the S3 Gateway functionalities with AWS CDK"
+    },
+    "app_config": {
+      "dev": {
+        "deployment_environment": "dev",
+        "vpc_cidr": "10.0.0.0/16",
+        "vpc_name": "vpc-demo",
+        "ec2_instance_prefix": "ec2-demo"
+      }
+    }
+  }
+}

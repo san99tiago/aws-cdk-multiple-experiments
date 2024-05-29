@@ -24,6 +24,16 @@ More Details: [codepipeline_2_sources/README.md](./codepipeline_2_sources/README
 
 ---
 
+### VPC Networking with VPC Endpoints
+
+Example on how to create a VPC with VPC Endpoints, so that traffic is routed through AWS Backbone, instead of internet, for example, accessing an S3 bucket 100% internally via AWS network.
+
+<img src="./assets/aws-multiple-experiments-vpc-networking.png" width=80%> <br>
+
+More Details: [vpc_networking/README.md](./vpc_networking/README.md)
+
+---
+
 ### Cross Account Event Notifications
 
 Decoupled Cross-Account EventBridge solution for notifying in a central AWS Account all "Backup Failures" from the "AWS Backup" service on any of the AWS Accounts of a given organization.

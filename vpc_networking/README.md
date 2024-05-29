@@ -1,5 +1,11 @@
 # VPC NETWORKING EXPERIMENTS
 
+## Architecture
+
+<img src="../assets/aws-multiple-experiments-vpc-networking.png" width=90%> <br>
+
+## Why this solution?
+
 The goal of this project is to explore how the traffic routes from different VPC configurations, such as:
 
 - EC2 instance within VPC towards S3 Bucket

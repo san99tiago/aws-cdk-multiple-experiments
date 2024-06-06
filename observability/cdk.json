@@ -1,0 +1,16 @@
+{
+  "app": "python3 app.py",
+  "context": {
+    "main_resources_name": "experiments-observability",
+    "tags": {
+      "Owner": "Santiago Garcia Arango",
+      "Source": "https://github.com/san99tiago/aws-cdk-multiple-experiments",
+      "Usage": "Multiple Observability experiments for logs alarms metrics and traces"
+    },
+    "app_config": {
+      "dev": {
+        "deployment_environment": "dev"
+      }
+    }
+  }
+}

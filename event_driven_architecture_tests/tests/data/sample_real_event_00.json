@@ -1,0 +1,26 @@
+{
+    "version": "0",
+    "id": "eda2337f-71b9-de1d-b460-388e2d55622e",
+    "detail-type": "eda-action",
+    "source": "eda-system.publisher",
+    "account": "123456789012",
+    "time": "2024-06-07T04:26:46Z",
+    "region": "us-east-1",
+    "resources": [],
+    "detail": {
+        "metadata": {
+            "version": "1",
+            "domain": "san99tiago",
+            "subdomain": "experiments",
+            "service": "eda-publisher",
+            "idempotency-key": "2e1237b9-08b1-4e4d-a56f-1cf5b428a1a2",
+            "correlation_id": "b434a399-433f-409d-8126-28bdb5091337"
+        },
+        "data": {
+            "id": "c6116033-a27e-4814-a2b2-c8a6d8d9f247",
+            "action": "buy",
+            "status": "completed",
+            "total": "1"
+        }
+    }
+}

@@ -39,13 +39,16 @@ class PublisherSystemStack(Stack):
         self.app_config = app_config
         self.deployment_environment = self.app_config["deployment_environment"]
 
-        # Execute main methods for the stack
+        # Execute main methods for the "core" infra
         self.create_event_bridge_bus()
         self.create_dynamodb_table()
         self.create_lambda_layers()
         self.create_lambda_functions()
         self.configure_lambda_permissions()
         self.configure_night_watch_lambda()
+
+        # Execute additional methods for the "test" infra
+        self.create_test_infrastructure()
 
     def create_event_bridge_bus(self):
         """
@@ -170,4 +173,74 @@ class PublisherSystemStack(Stack):
             targets=[
                 aws_events_targets.LambdaFunction(self.lambda_night_watch),
             ],
+        )
+
+    def create_test_infrastructure(self):
+        """
+        Method to create additional resources for enabling advanced integration testing
+        patterns for the Events emitted by the publisher system.
+        """
+
+        # Integration Tests DynamoDB Table for storing test events
+        table_name = f"eda-integration-tests-events-{self.deployment_environment}"
+        self.int_tests_dynamodb_table = aws_dynamodb.Table(
+            self,
+            "IntTests-DynamoDB-Table",
+            table_name=table_name,
+            partition_key=aws_dynamodb.Attribute(
+                name="pk", type=aws_dynamodb.AttributeType.STRING
+            ),
+            sort_key=aws_dynamodb.Attribute(
+                name="sk", type=aws_dynamodb.AttributeType.STRING
+            ),
+            billing_mode=aws_dynamodb.BillingMode.PAY_PER_REQUEST,
+            time_to_live_attribute="ttl",  # Enable TTL for auto-deletion of items
+            removal_policy=RemovalPolicy.DESTROY,
+        )
+
+        # Path for the "events_saver" that will enable long-lasting test resources
+        PATH_TO_EVENTS_SAVER_LAMBDA_FUNCTION_FOLDER = os.path.join(
+            os.path.dirname(os.path.dirname(__file__)), "src", "events_saver"
+        )
+
+        # Integration Tests Lambda - Events Saver that saves events to DynamoDB to validate integration tests
+        function_name = (
+            f"eda-integration-tests-events-saver-{self.deployment_environment}"
+        )
+        self.int_tests_lambda_function: aws_lambda.Function = aws_lambda.Function(
+            self,
+            "IntTests-Lambda-EventsSaver",
+            function_name=function_name,
+            description="Lambda function that enables saving events to DynamoDB for integration tests.",
+            runtime=aws_lambda.Runtime.PYTHON_3_12,
+            timeout=Duration.seconds(30),
+            code=aws_lambda.Code.from_asset(
+                PATH_TO_EVENTS_SAVER_LAMBDA_FUNCTION_FOLDER
+            ),
+            handler="events_saver.lambda_handler",
+            memory_size=128,
+            environment={
+                "ENVIRONMENT": self.deployment_environment,
+                "POWERTOOLS_LOG_LEVEL": "DEBUG",
+                "TEST_DYNAMODB_TABLE": self.int_tests_dynamodb_table.table_name,
+            },
+            layers=[self.lambda_layer_powertools],
+        )
+        self.int_tests_dynamodb_table.grant_read_write_data(
+            self.int_tests_lambda_function
+        )
+
+        # Integration Tests EventBridge Rule - Trigger Lambda that saves tests events
+        eventbus_rule = aws_events.Rule(
+            self,
+            "IntTests-EventRule-EventsSaver",
+            rule_name=f"eda-integration-tests-events-saver-rule-{self.deployment_environment}",
+            event_bus=self.eventbus,
+            # Only allow "test" events to be saved to the DynamoDB table
+            event_pattern=aws_events.EventPattern(
+                source=["eda-system.publisher.tests", "tests", "test"],
+            ),
+        )
+        eventbus_rule.add_target(
+            aws_events_targets.LambdaFunction(self.int_tests_lambda_function)
         )

@@ -9,8 +9,8 @@ from aws_cdk import (
     aws_iam,
     aws_s3_deployment,
     aws_ec2,
+    aws_logs,
     RemovalPolicy,
-    Duration,
     Tags,
 )
 from constructs import Construct
@@ -18,8 +18,7 @@ from constructs import Construct
 
 class VPCNetworkingStack(Stack):
     """
-    Class to create S3 buckets and automatically upload some sample objects at
-    deployment time via "aws_s3_deployment".
+    Class to create the networking stack and resources for the VPC Networking demo.
     """
 
     def __init__(
@@ -44,6 +43,7 @@ class VPCNetworkingStack(Stack):
         self.app_config = app_config
 
         # Main methods for the deployment
+        self.import_vpc()
         self.create_vpc()
         self.configure_vpc()
         self.create_s3_buckets()
@@ -52,23 +52,51 @@ class VPCNetworkingStack(Stack):
         # Create CloudFormation outputs
         self.generate_cloudformation_outputs()
 
-    def create_vpc(self):
+    def import_vpc(self):
         """
         Method to import the necessary resources from the VPC stack.
         """
+        # Import the default VPC
+        self.default_vpc = aws_ec2.Vpc.from_lookup(
+            self,
+            "DefaultVPC",
+            is_default=True,
+        )
+
+    def create_vpc(self):
+        """
+        Method to create the necessary resources from the VPC stack.
+        """
+
+        # CW Log Group for VPC Flow Logs
+        log_group = aws_logs.LogGroup(
+            self,
+            "MyCWLogsGroup",
+            log_group_name=f"vpc-flow-logs/{self.app_config['vpc_name']}",
+            retention=aws_logs.RetentionDays.ONE_WEEK,
+        )
+        role = aws_iam.Role(
+            self,
+            "MyCWLogsRole",
+            assumed_by=aws_iam.ServicePrincipal("vpc-flow-logs.amazonaws.com"),
+        )
+
+        # Create the main VPC resources
         self.vpc = aws_ec2.Vpc(
             self,
             "VPC",
             ip_addresses=aws_ec2.IpAddresses.cidr(self.app_config["vpc_cidr"]),
             create_internet_gateway=True,
-            availability_zones=["us-east-1a", "us-east-1b", "us-east-1c"],
+            availability_zones=["us-east-1a", "us-east-1b"],
             vpc_name=self.app_config["vpc_name"],
+            nat_gateways=1,  # Only 1 to reduce costs
         )
 
-        self.default_vpc = aws_ec2.Vpc.from_lookup(
-            self,
-            "DefaultVPC",
-            is_default=True,
+        # Enable VPC Flow Logs
+        self.vpc.add_flow_log(
+            "VPCFlowLog",
+            traffic_type=aws_ec2.FlowLogTrafficType.ALL,
+            destination=aws_ec2.FlowLogDestination.to_cloud_watch_logs(log_group, role),
         )
 
     def configure_vpc(self):

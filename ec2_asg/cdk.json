@@ -1,0 +1,21 @@
+{
+  "app": "python3 app.py",
+  "context": {
+    "main_resources_name": "ec2-asg",
+    "tags": {
+      "Owner": "Santiago Garcia Arango",
+      "Source": "https://github.com/san99tiago/aws-cdk-multiple-experiments",
+      "Usage": "Validation of different options to deploy AWS EC2 instances with CDK"
+    },
+    "app_config": {
+      "dev": {
+        "deployment_environment": "dev",
+        "auto_scaling_group_name": "asg-ec2-tests",
+        "min_capacity": 2,
+        "max_capacity": 4,
+        "desired_capacity": 2,
+        "key_name": "ec2-asg-dev"
+      }
+    }
+  }
+}

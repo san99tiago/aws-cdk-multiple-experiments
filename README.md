@@ -70,6 +70,18 @@ TODO: Add AWS architecture diagram.
 
 ---
 
+### EC2 ASG Servers
+
+The purpose of this project is to show how to configure Auto Scaling Groups with CDK in a simple way, by also considering roles, security groups and UserData for bootstrapping.
+
+TODO: Add AWS architecture diagram.
+
+<!-- <img src="./assets/TODO_ADD_DIAGRAM" width=60%> <br> -->
+
+More Details: [ec2_asg/README.md](./ec2_asg/README.md)
+
+---
+
 ### OTHERS
 
 TODO: Pending to add detailed README.md files and architectures.

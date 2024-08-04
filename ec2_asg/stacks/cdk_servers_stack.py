@@ -125,6 +125,23 @@ class ServersStack(Stack):
             role=self.instance_role,
         )
 
+        # # DELETEME
+        # ec2 = aws_ec2.Instance(
+        #     self,
+        #     "EC2",
+        #     instance_type=aws_ec2.InstanceType.of(
+        #         aws_ec2.InstanceClass.BURSTABLE2,
+        #         aws_ec2.InstanceSize.MICRO,
+        #     ),
+        #     machine_image=aws_ec2.MachineImage.latest_amazon_linux2(),
+        #     vpc=self.vpc,
+        #     vpc_subnets=aws_ec2.SubnetSelection(
+        #         subnet_type=aws_ec2.SubnetType.PUBLIC,
+        #     ),
+        #     key_name=self.app_config["key_name"],
+        #     security_group=self.sg,
+        # )
+
         # Add user data to the ASG
         PATH_TO_USER_DATA = os.path.join(
             os.path.dirname(__file__), "user_data_script.sh"

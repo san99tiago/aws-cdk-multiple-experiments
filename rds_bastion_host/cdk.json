@@ -1,0 +1,38 @@
+{
+  "app": "python3 app.py",
+  "context": {
+    "main_resources_name": "rds-bastion-host",
+    "tags": {
+      "Owner": "Santiago Garcia Arango",
+      "Source": "https://github.com/san99tiago/aws-cdk-multiple-experiments",
+      "Usage": "Demo of advanced bastion host with EC2 and custom domain to connect to RDS"
+    },
+    "app_config": {
+      "dev": {
+        "deployment_environment": "dev",
+        "networking": {
+          "comment": "could be replaced for existing VPC",
+          "vpc_name": "main-vpc-dev",
+          "vpc_cidr": "10.0.16.0/20",
+          "public_subnet_mask": 24,
+          "private_subnet_mask": 24,
+          "enable_nat_gateway": false
+        },
+        "servers": {
+          "short_name": "bastion-host",
+          "sg_cidrs_list": ["181.0.0.0/8"],
+          "instance_type": "t2.micro",
+          "key_name": "gen-main",
+          "enable_dns": true,
+          "hosted_zone_name": "dev.san99tiago.com"
+        },
+        "database": {
+          "short_name": "sample-db",
+          "note": "t4g.micro is the only free tier eligible instance type (do NOT add the 'db' prefix)",
+          "db_instance_type": "t4g.micro",
+          "allocated_storage": 20
+        }
+      }
+    }
+  }
+}

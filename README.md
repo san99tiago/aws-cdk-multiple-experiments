@@ -44,6 +44,18 @@ More Details: [cross_account_event_notifications/README.md](./cross_account_even
 
 ---
 
+### RDS Bastion Host for SQL Clients
+
+Deploy RDS instances (MySQL or PostgreSQL) within private subnets and a dedicated Bastion Host is set up in a public subnet with a custom DNS, allowing users to establish an SSH tunnel for secure, TCP/IP connections over SSH. This configuration enables the use of popular SQL client tools, such as MySQL Workbench or PGAdmin, to interact with the RDS instances without direct public access to the databases.
+
+## Architecture
+
+<img src="./assets/aws-rds-bastion-host-architecture.png" width=80%> <br>
+
+More Details: [rds_bastion_host/README.md](./rds_bastion_host/README.md)
+
+---
+
 ### Custom Resource S3 Folders :open_file_folder:
 
 AWS CloudFormation Custom-Resource built with AWS-CDK to upload "S3 Folders" at CDK deployment time.

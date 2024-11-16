@@ -35,11 +35,11 @@ sudo systemctl start amazon-ssm-agent
 ######################################################
 # --------- CONFIGURE SQL CLIENTS ---------
 ######################################################
+sudo dnf update -y
 echo "----- Installing MySQL CLI -----"
-sudo yum install -y mysql
+sudo dnf install -y mysql
 
 # Install PostgreSQL CLI in Amazon Linux 2023
-sudo dnf upgrade -y
 echo "----- Installing PostgreSQL CLI -----"
 sudo dnf install -y postgresql15
 
